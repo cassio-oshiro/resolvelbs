@@ -17,6 +17,7 @@ import {
   Navigation,
   Play,
 } from "lucide-react";
+import { extrairTorresDoHex } from "../../lib/lbsParser";
 
 interface Torre {
   cellId: number;
@@ -111,28 +112,7 @@ export default function LbsParser() {
 
   const processarLBS = () => {
     try {
-      const listaHex = input
-        .split(";")
-        .map((s) => s.trim())
-        .filter((s) => s.length > 0);
-      const todasAsTorres: Torre[] = [];
-
-      listaHex.forEach((hex, index) => {
-        const cleanHex = hex.replace(/^0x/i, "");
-        const bytes = Buffer.from(cleanHex, "hex");
-        for (let i = 0; i <= bytes.length - 14; i += 14) {
-          const chunk = bytes.slice(i, i + 14);
-          todasAsTorres.push({
-            cellId: chunk.readInt32BE(0),
-            lac: chunk.readInt32BE(4),
-            mcc: chunk.readUInt16BE(8),
-            mnc: chunk.readUInt16BE(10),
-            signal: chunk.readUInt16BE(12),
-            origemIdx: index + 1,
-            dadoBruto: hex,
-          });
-        }
-      });
+      const todasAsTorres = extrairTorresDoHex(input); // Chama a função da Lib
       setResults(todasAsTorres);
       setSelectedRaw(null);
     } catch {
@@ -209,10 +189,16 @@ export default function LbsParser() {
                     Ref
                   </th>
                   <th className="p-4 text-xs font-bold text-gray-500 uppercase">
-                    Cell ID / LAC
+                    Cell ID
                   </th>
                   <th className="p-4 text-xs font-bold text-gray-500 uppercase">
-                    MCC-MNC
+                    LAC
+                  </th>
+                  <th className="p-4 text-xs font-bold text-gray-500 uppercase">
+                    MCC
+                  </th>
+                  <th className="p-4 text-xs font-bold text-gray-500 uppercase">
+                    MNC
                   </th>
                   <th className="p-4 text-xs font-bold text-gray-500 uppercase text-center">
                     Sinal
@@ -241,15 +227,10 @@ export default function LbsParser() {
                         #{t.origemIdx}
                       </button>
                     </td>
-                    <td className="p-4 font-mono text-sm">
-                      <div className="text-blue-700 font-medium">
-                        {t.cellId}
-                      </div>
-                      <div className="text-gray-400 text-xs">{t.lac}</div>
-                    </td>
-                    <td className="p-4 text-sm text-gray-500">
-                      {t.mcc}-{t.mnc}
-                    </td>
+                    <td className="p-4 font-mono text-sm">{t.cellId}</td>
+                    <td className="p-4 font-mono text-sm">{t.lac}</td>
+                    <td className="p-4 text-sm text-gray-500">{t.mcc}</td>
+                    <td className="p-4 text-sm text-gray-500">{t.mnc}</td>
                     <td className="p-4 text-center text-xs font-bold text-green-600">
                       {t.signal}
                     </td>
