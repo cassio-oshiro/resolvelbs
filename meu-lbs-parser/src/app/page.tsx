@@ -296,10 +296,11 @@ export default function LbsParser() {
                 />
                 {results.map(
                   (t, i) =>
-                    t.lat && (
+                    t.lat &&
+                    t.lng && (
                       <Marker
                         key={i}
-                        position={{ lat: t.lat, lng: t.lng }}
+                        position={{ lat: t.lat!, lng: t.lng! }}
                         label={{
                           text: t.origemIdx.toString(),
                           color: "white",
