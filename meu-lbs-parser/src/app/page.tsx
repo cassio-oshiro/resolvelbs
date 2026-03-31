@@ -25,10 +25,13 @@ interface Torre {
   mcc: number;
   mnc: number;
   signal: number;
+  timeStamp: Date; // ← adicionar
   origemIdx: number;
   dadoBruto: string;
   lat?: number;
   lng?: number;
+  latitude?: number;
+  longitude?: number;
   loading?: boolean;
 }
 
@@ -204,10 +207,19 @@ export default function LbsParser() {
                     Sinal
                   </th>
                   <th className="p-4 text-xs font-bold text-gray-500 uppercase">
-                    Latitude
+                    Timestamp
                   </th>
                   <th className="p-4 text-xs font-bold text-gray-500 uppercase">
-                    Longitude
+                    Latitude Gps
+                  </th>
+                  <th className="p-4 text-xs font-bold text-gray-500 uppercase">
+                    Longitude Gps
+                  </th>
+                  <th className="p-4 text-xs font-bold text-gray-500 uppercase">
+                    Latitude resolvido
+                  </th>
+                  <th className="p-4 text-xs font-bold text-gray-500 uppercase">
+                    Longitude resolvido
                   </th>
                   <th className="p-4 text-xs font-bold text-gray-500 uppercase text-center">
                     Ação
@@ -233,6 +245,27 @@ export default function LbsParser() {
                     <td className="p-4 text-sm text-gray-500">{t.mnc}</td>
                     <td className="p-4 text-center text-xs font-bold text-green-600">
                       {t.signal}
+                    </td>
+                    <td className="p-4 font-mono text-xs text-gray-500">
+                      {t.timeStamp ? (
+                        new Date(t.timeStamp).toLocaleString("pt-BR")
+                      ) : (
+                        <span className="text-red-400 italic">Sem horário</span>
+                      )}
+                    </td>
+                    <td className="p-4 font-mono text-xs text-gray-500">
+                      {t.latitude !== 0 ? (
+                        t.latitude.toFixed(6)
+                      ) : (
+                        <span className="text-gray-300">—</span>
+                      )}
+                    </td>
+                    <td className="p-4 font-mono text-xs text-gray-500">
+                      {t.longitude !== 0 ? (
+                        t.longitude.toFixed(6)
+                      ) : (
+                        <span className="text-gray-300">—</span>
+                      )}
                     </td>
                     <td className="p-4 font-mono text-xs text-gray-500">
                       {t.lat?.toFixed(6) || "-"}
