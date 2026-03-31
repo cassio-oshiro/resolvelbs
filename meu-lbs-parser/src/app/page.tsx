@@ -17,23 +17,7 @@ import {
   Navigation,
   Play,
 } from "lucide-react";
-import { extrairTorresDoHex } from "../../lib/lbsParser";
-
-interface Torre {
-  cellId: number;
-  lac: number;
-  mcc: number;
-  mnc: number;
-  signal: number;
-  timeStamp: Date; // ← adicionar
-  origemIdx: number;
-  dadoBruto: string;
-  lat?: number;
-  lng?: number;
-  latitude?: number;
-  longitude?: number;
-  loading?: boolean;
-}
+import { extrairTorresDoHex, type Torre } from "../../lib/lbsParser";
 
 const containerStyle = { width: "100%", height: "450px", borderRadius: "12px" };
 
